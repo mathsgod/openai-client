@@ -12,6 +12,30 @@ class Audio
         $this->client = $client;
     }
 
+    public function translate(array $body)
+    {
+        $data = [];
+        foreach ($body as $name => $value) {
+            if ($name == "file") {
+                $data[] = [
+                    "name" => $name,
+                    "contents" => \GuzzleHttp\Psr7\Utils::tryFopen($value, 'r')
+                ];
+            } else {
+                $data[] = [
+                    "name" => $name,
+                    "contents" => $value
+                ];
+            }
+        }
+
+        $response = $this->client->post("audio/translations", [
+            "multipart" => $data
+        ]);
+
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
     public function transcribe(array $body)
     {
         $data = [];

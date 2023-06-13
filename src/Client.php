@@ -2,10 +2,7 @@
 
 namespace OpenAI;
 
-use CurlHandle;
-use Exception;
 use GuzzleHttp\Exception\ConnectException;
-use GuzzleHttp\Exception\RequestException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
@@ -13,15 +10,14 @@ use GuzzleHttp\Middleware;
 class Client
 {
     private $client;
-
-
     public $model;
     public $chatCompletion;
     public $completion;
     public $edit;
     public $embedding;
     public $audio;
-
+    public $file;
+    public $image;
 
     public function __construct(string $openai_api_key)
     {
@@ -43,9 +39,29 @@ class Client
         $this->embedding = new Embedding($this->client);
         $this->edit = new Edit($this->client);
         $this->audio = new Audio($this->client);
+        $this->file = new File($this->client);
+        $this->image = new Image($this->client);
     }
 
-    public function createTranscription(string $file, string $model)
+    public function createImage(array $body)
+    {
+        return $this->image->create($body);
+    }
+
+    public function listFiles()
+    {
+        return $this->file->list();
+    }
+
+    public function createTranslation(string $file, string $model = "whisper-1")
+    {
+        return $this->audio->translate([
+            "file" => $file,
+            "model" => $model
+        ]);
+    }
+
+    public function createTranscription(string $file, string $model = "whisper-1")
     {
         return $this->audio->transcribe([
             "file" => $file,
@@ -122,97 +138,5 @@ class Client
 
             return false;
         };
-    }
-
-
-
-    private function sendRequest(string $uri, array $params)
-    {
-        while (true) {
-            try {
-                $response = $this->client->post($uri, [
-                    "json" => $params
-                ]);
-                return json_decode($response->getBody()->getContents(), true);
-            } catch (RequestException $e) {
-                if ($e->getCode() == 429) {
-                    //                    echo "Too many requests, sleeping for 3 seconds\n";
-                    sleep(3);
-                } else {
-                    return null;
-                }
-            }
-        }
-    }
-
-    public function chat(array $options)
-    {
-        return $this->sendRequest("chat/completions", $options);
-    }
-
-    /**
-     * 
-     */
-    public function transcriptions(array $options)
-    {
-        return $this->sendRequest("audio/transcription", $options);
-    }
-
-
-    public function speechToText(string $file)
-    {
-
-        $response = $this->openaiClient->audioTranscriptions()->create(
-            new \Tectalic\OpenAi\Models\AudioTranscriptions\CreateRequest([
-                'file' => $file,
-                'model' => 'whisper-1',
-            ])
-        )->toModel();
-
-        return $response->text;
-    }
-
-
-    public function getEmbedding(string $input)
-    {
-
-        while (true) {
-            try {
-                $response = $this->openaiClient->embeddings()->create(
-                    new \Tectalic\OpenAi\Models\Embeddings\CreateRequest([
-                        "model" => "text-embedding-ada-002",
-                        "input" => $input
-                    ])
-                )->toModel();
-                return $response->data[0]->embedding;
-            } catch (Exception $e) {
-                echo $e->getMessage();
-                sleep(5);
-            }
-        };
-    }
-
-
-    public function ask(array $messages)
-    {
-        while (true) {
-            try {
-                $response = $this->openaiClient->chatCompletions()->create(
-                    new \Tectalic\OpenAi\Models\ChatCompletions\CreateRequest([
-                        'model' => 'gpt-3.5-turbo',
-                        'messages' => $messages,
-                        "temperature" => 0.5,
-                    ])
-                )->toModel();
-                return $response->choices[0]->message->content;
-            } catch (Exception $e) {
-                $message = $e->getMessage();
-                if ($message === "Unsuccessful response. HTTP status code: 429 (Too Many Requests).") {
-                    sleep(2);
-                } else {
-                    return "";
-                }
-            }
-        }
     }
 }
