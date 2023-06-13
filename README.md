@@ -24,6 +24,27 @@ $response=$client->createCompletion([
     "max_tokens"=>7,
     "temperature"=>0,
 ])
+/*
+{
+  "id": "cmpl-uqkvlQyYK7bGYrRHQ0eXlWi7",
+  "object": "text_completion",
+  "created": 1589478378,
+  "model": "text-davinci-003",
+  "choices": [
+    {
+      "text": "\n\nThis is indeed a test",
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "length"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 5,
+    "completion_tokens": 7,
+    "total_tokens": 12
+  }
+}
+*/
 ```
 
 ### Chat completion
@@ -36,8 +57,28 @@ $response=$client->createChatCompletion([
         ["role"=>"user","content"=>"Hello world"],
     ],
 ]);
-```
 
+/*
+{
+  "id": "chatcmpl-123",
+  "object": "chat.completion",
+  "created": 1677652288,
+  "choices": [{
+    "index": 0,
+    "message": {
+      "role": "assistant",
+      "content": "\n\nHello there, how may I assist you today?",
+    },
+    "finish_reason": "stop"
+  }],
+  "usage": {
+    "prompt_tokens": 9,
+    "completion_tokens": 12,
+    "total_tokens": 21
+  }
+}
+*/
+```
 
 ### Images
 
@@ -45,8 +86,22 @@ $response=$client->createChatCompletion([
    
 ```php 
 $response=$client->createImage([
-    "prompt" => "A cute baby sea otter"
+    "prompt" => "A cute baby sea otter",
+    "n"=>2
 ]);
+/*
+{
+  "created": 1589478378,
+  "data": [
+    {
+      "url": "https://..."
+    },
+    {
+      "url": "https://..."
+    }
+  ]
+}
+*/
 ```
 
 
