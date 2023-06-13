@@ -1,0 +1,25 @@
+{
+    "name": "mathsgod/openai-client",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Raymond Chong",
+            "email": "mathsgod@yahoo.com"
+        }
+    ],
+    "require": {
+        "gioni06/gpt3-tokenizer": "^1.2",
+        "tectalic/openai": "^1.4",
+        "guzzlehttp/guzzle": "^7.5"
+    },
+    "config": {
+        "allow-plugins": {
+            "php-http/discovery": true
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "OpenAI\\": "src"
+        }
+    }
+}
