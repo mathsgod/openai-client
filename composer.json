@@ -1,5 +1,6 @@
 {
     "name": "mathsgod/openai-client",
+    "description": "A PHP client for OpenAI's API",
     "license": "MIT",
     "authors": [
         {
@@ -9,13 +10,7 @@
     ],
     "require": {
         "gioni06/gpt3-tokenizer": "^1.2",
-        "tectalic/openai": "^1.4",
         "guzzlehttp/guzzle": "^7.5"
-    },
-    "config": {
-        "allow-plugins": {
-            "php-http/discovery": true
-        }
     },
     "autoload": {
         "psr-4": {

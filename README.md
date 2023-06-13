@@ -1,6 +1,6 @@
 # openai-client
 
-A simple client for the OpenAI API.
+A very simple client for the OpenAI API.
 
 ## Installation
 
