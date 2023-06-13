@@ -53,7 +53,7 @@ class Client
         return $this->file->list();
     }
 
-    public function createTranslation(string $file, string $model = "whisper-1")
+    public function createTranslation($file, string $model = "whisper-1")
     {
         return $this->audio->translate([
             "file" => $file,
@@ -61,7 +61,7 @@ class Client
         ]);
     }
 
-    public function createTranscription(string $file, string $model = "whisper-1")
+    public function createTranscription($file, string $model = "whisper-1")
     {
         return $this->audio->transcribe([
             "file" => $file,

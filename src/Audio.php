@@ -16,17 +16,10 @@ class Audio
     {
         $data = [];
         foreach ($body as $name => $value) {
-            if ($name == "file") {
-                $data[] = [
-                    "name" => $name,
-                    "contents" => \GuzzleHttp\Psr7\Utils::tryFopen($value, 'r')
-                ];
-            } else {
-                $data[] = [
-                    "name" => $name,
-                    "contents" => $value
-                ];
-            }
+            $data[] = [
+                "name" => $name,
+                "contents" => $value
+            ];
         }
 
         $response = $this->client->post("audio/translations", [
@@ -40,17 +33,10 @@ class Audio
     {
         $data = [];
         foreach ($body as $name => $value) {
-            if ($name == "file") {
-                $data[] = [
-                    "name" => $name,
-                    "contents" => \GuzzleHttp\Psr7\Utils::tryFopen($value, 'r')
-                ];
-            } else {
-                $data[] = [
-                    "name" => $name,
-                    "contents" => $value
-                ];
-            }
+            $data[] = [
+                "name" => $name,
+                "contents" => $value
+            ];
         }
 
         $response = $this->client->post("audio/transcriptions", [

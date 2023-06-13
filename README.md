@@ -142,13 +142,13 @@ $response = $client->createEmbedding([
 #### Create transcription
 
 ```php
-$response=$client->createTranscription(__DIR__ . "/test.mp3");
+$response=$client->createTranscription(fopen(__DIR__ . "/test.mp3","r"));
 ```
 
 #### Create translation
 Translates audio into into English.
 ```php
-$respnose=$client->createTranslation(__DIR__ . "/test.mp3");
+$respnose=$client->createTranslation(fopen(__DIR__ . "/test.mp3","r"));
 ```
 
 
