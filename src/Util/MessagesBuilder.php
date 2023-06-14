@@ -109,7 +109,7 @@ class MessagesBuilder
         $token_count = 0;
         foreach (array_reverse($this->chat_messages) as $message) {
             $messages[] = $message;
-            $token_count += Token::Count($message["content"]);
+            $token_count += Token::Count($message["content"] ?? "");
             $token_count += 4;
             if ($token_count > $max_token) {
                 break;
