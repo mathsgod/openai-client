@@ -4,9 +4,8 @@ namespace OpenAI\Util;
 
 class MessagesBuilder
 {
-    private $chat_messages = [];
-    private $context_messages = [];
     private $system_messages = [];
+    private $chat_messages = [];
 
     private $max_token = 4096;
 
@@ -28,21 +27,11 @@ class MessagesBuilder
         return $this->system_messages;
     }
 
-    public function getContextMessages(): array
-    {
-        return $this->context_messages;
-    }
-
     public function getChatMessages()
     {
         return $this->chat_messages;
     }
 
-
-    public function addContextMessages(array $contextMessage)
-    {
-        $this->context_messages[] = $contextMessage;
-    }
 
     public function addChatMessage($message)
     {
@@ -100,16 +89,11 @@ class MessagesBuilder
 
         //count this system message
         $system_count = Token::CountMessages($input);
-        $context_count = Token::CountMessages($this->context_messages);
-
-        $token_count = $system_count + $context_count;
 
         $answer_token = 1000;
-        $token_left = $this->max_token - $token_count - $answer_token;
+        $token_left = $this->max_token -  $system_count - $answer_token;
 
         //the chat message token should be less than token_left
-
-        $input = array_merge($input, $this->context_messages);
 
         $limited_messages = $this->getLimitedChatMessage($token_left);
 
