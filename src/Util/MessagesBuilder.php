@@ -8,6 +8,13 @@ class MessagesBuilder
     private $context_messages = [];
     private $system_messages = [];
 
+    private $max_token = 4096;
+
+    public function __construct(int $max_token = 4096)
+    {
+        $this->max_token = $max_token;
+    }
+
     public function addSystemMessages(string $systemMessage)
     {
         $this->system_messages[] = $systemMessage;
@@ -70,35 +77,15 @@ class MessagesBuilder
         ];
     }
 
-    /*  public function getSummarizedChatMessages()
+    public function addFunctionMessage(string $content, string $name)
     {
-        $messages = [];
-        $s_messages = [];
-        $token_count = 0;
-        foreach (array_reverse($this->chat_messages) as $message) {
-            $token_count += Token::Count($message["content"]);
-            $token_count += 4;
-            if ($token_count > 1000) {
-                $s_messages[] = $message;
-            } else {
-                $messages[] = $message;
-            }
-        }
-
-        $messages = array_reverse($messages);
-        $s_messages = array_reverse($s_messages);
-
-        if (!$s_messages) return $messages;
-
-        $output = App::SummarizeMessage($s_messages);
-        return array_merge([
-            [
-                "role" => "system",
-                "content" => $output
-            ]
-        ], $messages);
+        $this->chat_messages[] = [
+            "role" => "function",
+            "content" => $content
+        ];
     }
- */
+
+
     public function getMessages(): array
     {
 
@@ -118,7 +105,7 @@ class MessagesBuilder
         $token_count = $system_count + $context_count;
 
         $answer_token = 1000;
-        $token_left = 4096 - $token_count - $answer_token;
+        $token_left = $this->max_token - $token_count - $answer_token;
 
         //the chat message token should be less than token_left
 
