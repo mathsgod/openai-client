@@ -135,13 +135,13 @@ class Client implements LoggerAwareInterface
             if ($response) {
                 // Retry on server errors
                 if ($response->getStatusCode() >= 500) {
-                    $this->logger->warning("Server error, retrying");
+                    $this->logger->warning("OpenAI server error, retrying");
                     return true;
                 }
 
                 // Retry on rate limit exceeded
                 if ($response->getStatusCode() == 429) {
-                    $this->logger->warning("Rate limit exceeded, retrying");
+                    $this->logger->warning("OpenAI server rate limit exceeded, retrying");
                     return true;
                 }
             }
