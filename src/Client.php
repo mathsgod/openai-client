@@ -102,7 +102,7 @@ class Client
     private function retryDelay()
     {
         return function ($numberOfRetries) {
-            return 3000;
+            return 3000 + (1000 * $numberOfRetries);
         };
     }
 
