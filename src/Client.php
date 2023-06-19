@@ -6,9 +6,14 @@ use GuzzleHttp\Exception\ConnectException;
 use GuzzleHttp\Handler\CurlHandler;
 use GuzzleHttp\HandlerStack;
 use GuzzleHttp\Middleware;
+use Psr\Log\LoggerAwareInterface;
+use Psr\Log\LoggerAwareTrait;
+use Psr\Log\NullLogger;
 
-class Client
+class Client implements LoggerAwareInterface
 {
+    use LoggerAwareTrait;
+
     private $client;
     public $model;
     public $chatCompletion;
@@ -18,6 +23,7 @@ class Client
     public $audio;
     public $file;
     public $image;
+
 
     public function __construct(string $openai_api_key)
     {
@@ -41,6 +47,8 @@ class Client
         $this->audio = new Audio($this->client);
         $this->file = new File($this->client);
         $this->image = new Image($this->client);
+
+        $this->logger = new NullLogger();
     }
 
     public function createImage(array $body)
@@ -127,11 +135,13 @@ class Client
             if ($response) {
                 // Retry on server errors
                 if ($response->getStatusCode() >= 500) {
+                    $this->logger->warning("Server error, retrying");
                     return true;
                 }
 
                 // Retry on rate limit exceeded
                 if ($response->getStatusCode() == 429) {
+                    $this->logger->warning("Rate limit exceeded, retrying");
                     return true;
                 }
             }

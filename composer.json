@@ -16,5 +16,8 @@
         "psr-4": {
             "OpenAI\\": "src"
         }
+    },
+    "require-dev": {
+        "psr/log": "^3.0"
     }
 }
