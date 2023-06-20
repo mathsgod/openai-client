@@ -78,7 +78,6 @@ $resp = $client->createChatCompletion([
 ]);
 
 ```
-
  
 ### Completion
 
