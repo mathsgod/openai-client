@@ -15,37 +15,6 @@ use OpenAI\Client;
 $client=new Client("OPEN_API_KEY");
 ```
 
-### Completion
-
-```php
-$response=$client->createCompletion([
-    "model"=>"text-davinci-003",
-    "prompt"=>"Say this is a test",
-    "max_tokens"=>7,
-    "temperature"=>0,
-])
-/*
-{
-  "id": "cmpl-uqkvlQyYK7bGYrRHQ0eXlWi7",
-  "object": "text_completion",
-  "created": 1589478378,
-  "model": "text-davinci-003",
-  "choices": [
-    {
-      "text": "\n\nThis is indeed a test",
-      "index": 0,
-      "logprobs": null,
-      "finish_reason": "length"
-    }
-  ],
-  "usage": {
-    "prompt_tokens": 5,
-    "completion_tokens": 7,
-    "total_tokens": 12
-  }
-}
-*/
-```
 
 ### Chat completion
 
@@ -75,6 +44,69 @@ $response=$client->createChatCompletion([
     "prompt_tokens": 9,
     "completion_tokens": 12,
     "total_tokens": 21
+  }
+}
+*/
+```
+
+#### Function call
+
+```php
+function get_iphone_price(string $model){
+  return ["model"=>"iphone14","price"=>"799"];
+}
+
+$resp = $client->createChatCompletion([
+    "model" => "gpt-3.5-turbo-0613",
+    "messages" => [
+      ["role" => "user", "content" => "What is the price of iphone14?"]
+    ],
+    "functions" => [
+        "name" => "get_iphone_price",
+        "description" => "Get the price of iphone",
+        "parameters" => [
+            "type" => "object",
+            "properties" => [
+                "model" => [
+                    "type" => "string",
+                    "description" => "The model of the iphone"
+                ]
+            ],
+            "required" => ["model"]
+        ],
+    ]
+]);
+
+```
+
+ 
+### Completion
+
+```php
+$response=$client->createCompletion([
+    "model"=>"text-davinci-003",
+    "prompt"=>"Say this is a test",
+    "max_tokens"=>7,
+    "temperature"=>0,
+])
+/*
+{
+  "id": "cmpl-uqkvlQyYK7bGYrRHQ0eXlWi7",
+  "object": "text_completion",
+  "created": 1589478378,
+  "model": "text-davinci-003",
+  "choices": [
+    {
+      "text": "\n\nThis is indeed a test",
+      "index": 0,
+      "logprobs": null,
+      "finish_reason": "length"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 5,
+    "completion_tokens": 7,
+    "total_tokens": 12
   }
 }
 */
