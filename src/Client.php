@@ -24,8 +24,10 @@ class Client implements LoggerAwareInterface
     public $file;
     public $image;
 
+    private $max_retries;
 
-    public function __construct(string $openai_api_key)
+
+    public function __construct(string $openai_api_key, int $max_retries = 10)
     {
         $handerStack = HandlerStack::create(new CurlHandler());
         $handerStack->push(Middleware::retry($this->retryDecider(), $this->retryDelay()));
@@ -49,6 +51,8 @@ class Client implements LoggerAwareInterface
         $this->image = new Image($this->client);
 
         $this->logger = new NullLogger();
+
+        $this->max_retries = $max_retries;
     }
 
     public function createImage(array $body)
@@ -122,11 +126,11 @@ class Client implements LoggerAwareInterface
             \GuzzleHttp\Psr7\Response $response = null,
             \GuzzleHttp\Exception\RequestException $exception = null
         ) {
-            /*             // Limit the number of retries to 5
-            if ($retries >= 5) {
+            // Limit the number of retries to 5
+            if ($retries >= $this->max_retries) {
                 return false;
             }
- */
+
             // Retry connection exceptions
             if ($exception instanceof ConnectException) {
                 return true;
@@ -135,7 +139,7 @@ class Client implements LoggerAwareInterface
             if ($response) {
                 // Retry on server errors
                 if ($response->getStatusCode() >= 500) {
-                    $this->logger->warning("OpenAI server error, retrying",[
+                    $this->logger->warning("OpenAI server error, retrying", [
                         "status" => $response->getStatusCode(),
                         "message" => $response->getBody()->getContents(),
                         "retries" => $retries
