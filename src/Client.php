@@ -135,7 +135,11 @@ class Client implements LoggerAwareInterface
             if ($response) {
                 // Retry on server errors
                 if ($response->getStatusCode() >= 500) {
-                    $this->logger->warning("OpenAI server error, retrying");
+                    $this->logger->warning("OpenAI server error, retrying",[
+                        "status" => $response->getStatusCode(),
+                        "message" => $response->getBody()->getContents(),
+                        "retries" => $retries
+                    ]);
                     return true;
                 }
 
