@@ -61,19 +61,21 @@ $resp = $client->createChatCompletion([
     "messages" => [
       ["role" => "user", "content" => "What is the price of iphone14?"]
     ],
-    "functions" => [
-        "name" => "get_iphone_price",
-        "description" => "Get the price of iphone",
-        "parameters" => [
-            "type" => "object",
-            "properties" => [
-                "model" => [
-                    "type" => "string",
-                    "description" => "The model of the iphone"
-                ]
+    "functions" =>[
+        [
+            "name" => "get_iphone_price",
+            "description" => "Get the price of iphone",
+            "parameters" => [
+                "type" => "object",
+                "properties" => [
+                    "model" => [
+                        "type" => "string",
+                        "description" => "The model of the iphone"
+                    ]
+                ],
+                "required" => ["model"]
             ],
-            "required" => ["model"]
-        ],
+        ]
     ]
 ]);
 
