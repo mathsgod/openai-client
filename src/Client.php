@@ -114,7 +114,7 @@ class Client implements LoggerAwareInterface
     private function retryDelay()
     {
         return function ($numberOfRetries) {
-            return 3000 + (1000 * $numberOfRetries);
+            return 5000 * (1 + $numberOfRetries);
         };
     }
 
@@ -152,8 +152,9 @@ class Client implements LoggerAwareInterface
                     $this->logger->warning("OpenAI server rate limit exceeded, retrying", [
                         "status" => $response->getStatusCode(),
                         "message" => $response->getBody()->getContents(),
-                        "retries" => $retries
+                        "retries" => $retries,
                     ]);
+
 
                     return true;
                 }
