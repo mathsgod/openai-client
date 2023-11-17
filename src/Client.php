@@ -27,13 +27,13 @@ class Client implements LoggerAwareInterface
     private $max_retries;
 
 
-    public function __construct(string $openai_api_key, int $max_retries = 10)
+    public function __construct(string $openai_api_key, int $max_retries = 10, string $baseURL = "https://api.openai.com/v1/")
     {
         $handerStack = HandlerStack::create(new CurlHandler());
         $handerStack->push(Middleware::retry($this->retryDecider(), $this->retryDelay()));
 
         $this->client = new \GuzzleHttp\Client([
-            "base_uri" => "https://api.openai.com/v1/",
+            "base_uri" => $baseURL,
             "verify" => false,
             "headers" => [
                 "Authorization" => "Bearer " . $openai_api_key,
