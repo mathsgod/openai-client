@@ -106,9 +106,12 @@ class Client implements LoggerAwareInterface
         return $this->model->list();
     }
 
-    public function createChatCompletion(array $body)
+    /**
+     * @return Psr\Http\Message\ResponseInterface|string
+     */
+    public function createChatCompletion(array $body, bool $stream = false)
     {
-        return $this->chatCompletion->create($body);
+        return $this->chatCompletion->create($body, $stream);
     }
 
     private function retryDelay()
