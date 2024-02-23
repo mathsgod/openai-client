@@ -59,6 +59,16 @@ class Client implements LoggerAwareInterface
         $this->thread = new Thread($this->client);
     }
 
+    public function getUsage(string $date)
+    {
+        $response = $this->client->get("usage", [
+            "query" => [
+                "date" => $date
+            ]
+        ]);
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
     public function createAssistant(string $model, ?string $name = null, ?string $description = null, ?string $instrucations = null, ?array $tools = [], ?array $file_ids = [], ?array $metadata = [])
     {
         return $this->assistant->create([
@@ -72,7 +82,8 @@ class Client implements LoggerAwareInterface
         ]);
     }
 
-    public function listThreads(){
+    public function listThreads()
+    {
         return [];
     }
 
