@@ -25,11 +25,13 @@ class Client implements LoggerAwareInterface
     public $image;
 
     private $max_retries;
+    public $assistant;
+    public $thread;
 
 
     public function __construct(string $openai_api_key, int $max_retries = 10, string $baseURL = "https://api.openai.com/v1/")
     {
-        $handerStack = HandlerStack::create(new CurlHandler());
+        $handerStack = HandlerStack::create();
         $handerStack->push(Middleware::retry($this->retryDecider(), $this->retryDelay()));
 
         $this->client = new \GuzzleHttp\Client([
@@ -53,6 +55,30 @@ class Client implements LoggerAwareInterface
         $this->logger = new NullLogger();
 
         $this->max_retries = $max_retries;
+        $this->assistant = new Assistant($this->client);
+        $this->thread = new Thread($this->client);
+    }
+
+    public function createAssistant(string $model, ?string $name = null, ?string $description = null, ?string $instrucations = null, ?array $tools = [], ?array $file_ids = [], ?array $metadata = [])
+    {
+        return $this->assistant->create([
+            "model" => $model,
+            "name" => $name,
+            "description" => $description,
+            "instructions" => $instrucations,
+            "tools" => $tools,
+            "file_ids" => $file_ids,
+            "metadata" => $metadata
+        ]);
+    }
+
+    public function listThreads(){
+        return [];
+    }
+
+    public function listAssistants()
+    {
+        return $this->assistant->list();
     }
 
     public function createImage(array $body)

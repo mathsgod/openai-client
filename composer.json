@@ -11,7 +11,8 @@
     "require": {
         "gioni06/gpt3-tokenizer": "^1.2",
         "guzzlehttp/guzzle": "^7.5",
-        "psr/log": "^3.0"
+        "psr/log": "^3.0",
+        "react/http": "^1.9"
     },
     "autoload": {
         "psr-4": {
