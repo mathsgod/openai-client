@@ -59,6 +59,16 @@ class Client implements LoggerAwareInterface
         $this->thread = new Thread($this->client);
     }
 
+    public function getTest(){
+        $response = $this->client->get("dashboard/billing/usage", [
+            "query" => [
+                "start_date" => "2024-02-22",
+                "end_date" => "2024-02-23"
+            ]
+        ]);
+        return json_decode($response->getBody()->getContents(), true);
+    }
+
     public function getUsage(string $date)
     {
         $response = $this->client->get("usage", [
