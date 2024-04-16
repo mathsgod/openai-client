@@ -24,4 +24,13 @@ class ChatCompletion
 
         return json_decode($response->getBody()->getContents(), true);
     }
+
+    public function createAsync(array $options, bool $stream = false)
+    {
+        return $this->client->postAsync("chat/completions", [
+            "json" => $options,
+            "stream" => $stream
+
+        ]);
+    }
 }
