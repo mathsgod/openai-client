@@ -2,7 +2,6 @@
 
 namespace OpenAI;
 
-use GuzzleHttp\Client;
 
 class Audio
 {
@@ -12,7 +11,13 @@ class Audio
         $this->client = $client;
     }
 
-    public function translate(array $body)
+    public function speech(array $body)
+    {
+        return $this->client->postRaw("audio/speech", [
+            "json" => $body
+        ]);
+    }
+    public function transcriptions(array $body)
     {
         $data = [];
         foreach ($body as $name => $value) {
@@ -21,15 +26,12 @@ class Audio
                 "contents" => $value
             ];
         }
-
-        $response = $this->client->post("audio/translations", [
+        return $this->client->postRaw("audio/transcriptions", [
             "multipart" => $data
         ]);
-
-        return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function transcribe(array $body)
+    public function translations(array $body)
     {
         $data = [];
         foreach ($body as $name => $value) {
@@ -39,10 +41,8 @@ class Audio
             ];
         }
 
-        $response = $this->client->post("audio/transcriptions", [
+        return $this->client->postRaw("audio/translations", [
             "multipart" => $data
         ]);
-
-        return json_decode($response->getBody()->getContents(), true);
     }
 }

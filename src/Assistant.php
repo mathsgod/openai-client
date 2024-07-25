@@ -2,8 +2,6 @@
 
 namespace OpenAI;
 
-use GuzzleHttp\Client;
-
 class Assistant
 {
     private $client;
@@ -14,34 +12,30 @@ class Assistant
 
     public function list()
     {
-        $response = $this->client->get("assistants", [
+        return $this->client->get("assistants", [
             "headers" => [
-                "OpenAI-Beta" => "assistants=v1"
+                "OpenAI-Beta" => "assistants=v2"
             ]
         ]);
-
-        return json_decode($response->getBody()->getContents(), true);
     }
 
 
     public function create(array $body)
     {
-        $response = $this->client->post("assistants", [
+        return $this->client->post("assistants", [
             "headers" => [
-                "OpenAI-Beta" => "assistants=v1"
+                "OpenAI-Beta" => "assistants=v2"
             ],
             "json" => $body
         ]);
-        return json_decode($response->getBody()->getContents(), true);
     }
 
     public function delete(string $assistant_id)
     {
-        $response = $this->client->delete("assistants/" . $assistant_id, [
+        return  $this->client->delete("assistants/" . $assistant_id, [
             "headers" => [
-                "OpenAI-Beta" => "assistants=v1"
+                "OpenAI-Beta" => "assistants=v2"
             ]
         ]);
-        return json_decode($response->getBody()->getContents(), true);
     }
 }
