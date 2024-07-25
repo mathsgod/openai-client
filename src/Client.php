@@ -106,6 +106,11 @@ class Client implements LoggerAwareInterface
         return $this->client;
     }
 
+    public function threads()
+    {
+        return new Threads($this);
+    }
+
     public function getTest()
     {
         $response = $this->client->get("dashboard/billing/usage", [
