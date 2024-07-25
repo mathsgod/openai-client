@@ -2,19 +2,21 @@
 
 namespace OpenAI;
 
-use Exception;
-
-class Threads
+class Messages
 {
+
     private $client;
-    public function __construct(Client $client)
+    private $thread_id;
+
+    public function __construct(Client $client, string $thread_id)
     {
         $this->client = $client;
+        $this->thread_id = $thread_id;
     }
 
     public function create(array $body)
     {
-        return $this->client->post("threads", [
+        return $this->client->post("threads/" . $this->thread_id . "/messages", [
             "headers" => [
                 "OpenAI-Beta" => "assistants=v2"
             ],
@@ -22,19 +24,9 @@ class Threads
         ]);
     }
 
-
     public function list()
     {
-        return $this->client->get("threads", [
-            "headers" => [
-                "OpenAI-Beta" => "assistants=v2"
-            ]
-        ]);
-    }
-
-    public function retrieve(string $thread_id)
-    {
-        return $this->client->get("threads/" . $thread_id, [
+        return $this->client->get("threads/" . $this->thread_id . "/messages", [
             "headers" => [
                 "OpenAI-Beta" => "assistants=v2"
             ]

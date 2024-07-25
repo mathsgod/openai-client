@@ -2,7 +2,7 @@
 
 namespace OpenAI;
 
-class Assistant
+class Assistants
 {
     private $client;
     public function __construct(Client $client)

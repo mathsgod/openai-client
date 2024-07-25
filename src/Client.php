@@ -35,6 +35,11 @@ class Client implements LoggerAwareInterface
         $this->max_retries = $max_retries;
     }
 
+    public function assistants()
+    {
+        return new Assistants($this);
+    }
+
     public function images()
     {
         return new Images($this);
@@ -73,9 +78,9 @@ class Client implements LoggerAwareInterface
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    public function delete($uri)
+    public function delete($uri, array $options = []): array
     {
-        $response = $this->client->delete($uri);
+        $response = $this->client->delete($uri, $options);
         return json_decode($response->getBody()->getContents(), true);
     }
 
@@ -109,6 +114,11 @@ class Client implements LoggerAwareInterface
     public function threads()
     {
         return new Threads($this);
+    }
+
+    public function thread(string $thread_id)
+    {
+        return new Thread($this, $thread_id);
     }
 
     public function getTest()
