@@ -17,6 +17,8 @@ class Client implements LoggerAwareInterface
     private $client;
 
     private $max_retries;
+    public $base_url;
+    public $openai_api_key;
 
     public function __construct(string $openai_api_key, int $max_retries = 10, string $baseURL = "https://api.openai.com/v1/")
     {
@@ -33,6 +35,8 @@ class Client implements LoggerAwareInterface
         ]);
         $this->logger = new NullLogger();
         $this->max_retries = $max_retries;
+        $this->base_url = $baseURL;
+        $this->openai_api_key = $openai_api_key;
     }
 
     public function assistants()

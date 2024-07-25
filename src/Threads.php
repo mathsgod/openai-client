@@ -14,12 +14,14 @@ class Threads
 
     public function create(array $body)
     {
-        return $this->client->post("threads", [
+        $data = $this->client->post("threads", [
             "headers" => [
                 "OpenAI-Beta" => "assistants=v2"
             ],
             "json" => $body
         ]);
+
+        return new Thread($this->client, $data["id"]);
     }
 
 

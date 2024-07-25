@@ -13,6 +13,13 @@ class Thread
         $this->thread_id = $thread_id;
     }
 
+    public function __debugInfo()
+    {
+        return [
+            "thread_id" => $this->thread_id
+        ];
+    }
+
     public function delete()
     {
         return $this->client->delete("threads/" . $this->thread_id, [
