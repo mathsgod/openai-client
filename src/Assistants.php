@@ -32,7 +32,7 @@ class Assistants
 
     public function delete(string $assistant_id)
     {
-        return  $this->client->delete("assistants/" . $assistant_id, [
+        return $this->client->delete("assistants/" . $assistant_id, [
             "headers" => [
                 "OpenAI-Beta" => "assistants=v2"
             ]

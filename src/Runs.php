@@ -44,9 +44,11 @@ class Runs
 
         $body["stream"] = true;
 
-        $promise = $browser->requestStreaming("POST", $this->client->base_url . "chat/completions", [
+
+        $promise = $browser->requestStreaming("POST", $this->client->base_url . "threads/$this->thread_id/runs", [
             "Authorization" => "Bearer " . $this->client->openai_api_key,
-            "Content-Type" => "application/json"
+            "Content-Type" => "application/json",
+            "OpenAI-Beta" => "assistants=v2"
         ], json_encode($body, JSON_UNESCAPED_UNICODE));
 
         $stream = new ThroughStream();
