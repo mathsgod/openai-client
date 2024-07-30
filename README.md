@@ -68,12 +68,8 @@ Array
 #### Function call
 
 ```php
-function get_iphone_price(string $model){
-  return ["model"=>"iphone14","price"=>"799"];
-}
-
-$resp = $client->createChatCompletion([
-    "model" => "gpt-3.5-turbo-0613",
+$data=$client->chatCompletions()->create([
+   "model" => "gpt-4o-mini",
     "messages" => [
       ["role" => "user", "content" => "What is the price of iphone14?"]
     ],
@@ -95,40 +91,49 @@ $resp = $client->createChatCompletion([
     ]
 ]);
 
-```
- 
-### Completion
-
-```php
-$response=$client->createCompletion([
-    "model"=>"text-davinci-003",
-    "prompt"=>"Say this is a test",
-    "max_tokens"=>7,
-    "temperature"=>0,
-])
-/*
-{
-  "id": "cmpl-uqkvlQyYK7bGYrRHQ0eXlWi7",
-  "object": "text_completion",
-  "created": 1589478378,
-  "model": "text-davinci-003",
-  "choices": [
-    {
-      "text": "\n\nThis is indeed a test",
-      "index": 0,
-      "logprobs": null,
-      "finish_reason": "length"
-    }
-  ],
-  "usage": {
-    "prompt_tokens": 5,
-    "completion_tokens": 7,
-    "total_tokens": 12
-  }
-}
-*/
+print_r($data);
 ```
 
+```
+Array
+(
+    [id] => chatcmpl-1234
+    [object] => chat.completion
+    [created] => 1722324296
+    [model] => gpt-4o-mini-2024-07-18
+    [choices] => Array
+        (
+            [0] => Array
+                (
+                    [index] => 0
+                    [message] => Array
+                        (
+                            [role] => assistant
+                            [content] =>
+                            [function_call] => Array
+                                (
+                                    [name] => get_iphone_price
+                                    [arguments] => {"model":"iPhone 14"}
+                                )
+
+                        )
+
+                    [logprobs] =>
+                    [finish_reason] => function_call
+                )
+
+        )
+
+    [usage] => Array
+        (
+            [prompt_tokens] => 60
+            [completion_tokens] => 19
+            [total_tokens] => 79
+        )
+
+    [system_fingerprint] => fp_1234
+)
+```
 ### Images
 
 #### Create image
