@@ -157,4 +157,62 @@ print_r($client->embeddings()->create([
 ```
 
 
+### Audio
+
+#### Speech
+```php
+print_r($client->audio()->speech([
+    "model"=>"tts-1",
+    "input"=>"Hello, how are you?",
+    "voice"=>"alloy"
+]));
+```
+
+#### Transcriptions
+```php
+print_r($client->audio()->transcriptions([
+    "model"=>"whisper-1",
+    "file"=>fopen('/path/to/audio.mp3', 'r')
+]));
+```
+
+#### Translation
+```php
+print_r($client->audio()->translation([
+    "model"=>"whisper-1",
+    "file"=>fopen('/path/to/audio.mp3', 'r')
+]));
+```
+
+## Assistants
+
+### Create
+
+```php
+$client->assistants()->create([
+    "model" => "gpt-4o-mini",
+]);
+```    
+
+### List
+```php
+$client->assistants()->list();
+```
+
+### Retrieve
+```php
+$client->assistants()->retrieve("asst_1234");
+```
+
+### Delete
+```php
+$client->assistant("asst_1234")->delete();
+```
+
+
+
+
+
+
+
 
