@@ -230,6 +230,29 @@ $client->thread("thread_1234")->messages()->create([
 ```
 
 
+#### Example
+
+```php
+$thread = $client->threads()->create([
+    "messages" => [
+        [
+            "role" => "user",
+            "content" => "Hi"
+        ]
+    ]
+]);
+
+$data=$thread->runs()->create([
+    "assistant_id" => "asst_1234", //assistant_id
+]);
+
+print_r($data); 
+
+```
+
+
+
+
 
 
 
