@@ -3,6 +3,7 @@
 namespace OpenAI;
 
 use Psr\Http\Message\ResponseInterface;
+use React\Promise\PromiseInterface;
 use React\Stream\DuplexStreamInterface;
 use React\Stream\ReadableStreamInterface;
 use React\Stream\ThroughStream;
@@ -38,6 +39,56 @@ class Runs
         ]);
     }
 
+    public static function ProcessPromise(PromiseInterface $promise): DuplexStreamInterface
+    {
+
+        $stream = new ThroughStream();
+
+        $promise->then(function (ResponseInterface $response) use (&$stream) {
+            $s = $response->getBody();
+            assert($s instanceof ReadableStreamInterface);
+
+            $next_chunk = "";
+
+            $s->on("data", function ($chunk) use (&$stream, &$next_chunk) {
+
+
+                $chunk = $next_chunk . $chunk;
+                $lines = explode("\n\n", $chunk);
+
+                //if last line is not empty, then it is not complete, only process the lines without last line
+                if ($lines[count($lines) - 1]) {
+                    $next_chunk = array_pop($lines);
+                } else {
+                    $next_chunk = "";
+                }
+
+                //filter out empty lines
+                $lines = array_filter($lines);
+
+                foreach ($lines as $line) {
+                    //process the lines
+
+                    list($event, $data) = explode("\n", $line, 2);
+
+                    //parse $event 
+                    $event = substr($event, 7);
+                    $stream->emit($event, [$data]);
+                }
+            });
+
+            $s->on("end", function () use (&$stream) {
+                $stream->end();
+            });
+
+            $s->on("close", function () use (&$stream) {
+                $stream->close();
+            });
+        });
+
+        return $stream;
+    }
+
     public function createStream(array $body): DuplexStreamInterface
     {
         $browser = new \React\Http\Browser();
@@ -51,25 +102,7 @@ class Runs
             "OpenAI-Beta" => "assistants=v2"
         ], json_encode($body, JSON_UNESCAPED_UNICODE));
 
-        $stream = new ThroughStream();
 
-        $promise->then(function (ResponseInterface $response) use (&$stream) {
-            $s = $response->getBody();
-            assert($s instanceof ReadableStreamInterface);
-
-            $s->on("data", function ($data) use (&$stream) {
-                $stream->write($data);
-            });
-
-            $s->on("end", function () use (&$stream) {
-                $stream->end();
-            });
-
-            $s->on("close", function () use (&$stream) {
-                $stream->close();
-            });
-        });
-
-        return $stream;
+        return self::ProcessPromise($promise);
     }
 }

@@ -34,7 +34,7 @@ class Thread
         return new Messages($this->client, $this->thread_id);
     }
 
-    public function run(string $assistant_id)
+    /*     public function run(string $assistant_id)
     {
         return $this->client->post("threads/" . $this->thread_id . "/runs", [
             "headers" => [
@@ -45,9 +45,14 @@ class Thread
             ]
         ]);
     }
-
+ */
     public function runs()
     {
         return new Runs($this->client, $this->thread_id);
+    }
+
+    public function run(string $run_id)
+    {
+        return new Run($this->client, $this->thread_id, $run_id);
     }
 }
