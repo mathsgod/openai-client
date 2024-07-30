@@ -214,7 +214,7 @@ $client->assistant("asst_1234")->delete();
 ### Create
 
 ```php
-$client->threads()->create();
+$client->threads()->create(); //return Thread object
 ```
 
 
@@ -229,8 +229,32 @@ $client->thread("thread_1234")->messages()->create([
 ]);
 ```
 
+#### Create with stream
 
-#### Example
+```php
+$stream = $thread->runs()->createStream([
+    "assistant_id" => "asst_1234",
+]);
+
+$stream->on("thread.message.delta", function ($data) {
+    echo $data;
+    echo "\n";
+});
+
+$stream->on("thread.message.completed", function ($data) {
+    echo $data;
+    echo "\n";
+});
+
+$stream->on("done", function () use (&$thread) {
+    echo "End\n";
+});
+
+```
+
+
+
+## Example
 
 ```php
 $thread = $client->threads()->create([
