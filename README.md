@@ -209,7 +209,25 @@ $client->assistants()->retrieve("asst_1234");
 $client->assistant("asst_1234")->delete();
 ```
 
+## Threads
 
+### Create
+
+```php
+$client->threads()->create();
+```
+
+
+## Messages
+
+### Create
+
+```php
+$client->thread("thread_1234")->messages()->create([
+    "role" => "user",
+    "content" => "Hello"
+]);
+```
 
 
 
