@@ -150,47 +150,11 @@ print_r($client->images()->generations([
 ### Embeddings
 
 ```php
-$response = $client->createEmbedding([
-    "model"=>"text-embedding-ada-002",
-    "input"=>"The food was delicious and the waiter..."
-]);
-
-/*
-{
-  "object": "list",
-  "data": [
-    {
-      "object": "embedding",
-      "embedding": [
-        0.0023064255,
-        -0.009327292,
-        .... (1536 floats total for ada-002)
-        -0.0028842222,
-      ],
-      "index": 0
-    }
-  ],
-  "model": "text-embedding-ada-002",
-  "usage": {
-    "prompt_tokens": 8,
-    "total_tokens": 8
-  }
-}
-*/
+print_r($client->embeddings()->create([
+    "model" => "text-embedding-3-small",
+    "input"=>"I feel great",
+]));
 ```
 
-### Audio
-
-#### Create transcription
-
-```php
-$response=$client->createTranscription(fopen(__DIR__ . "/test.mp3","r"));
-```
-
-#### Create translation
-Translates audio into into English.
-```php
-$respnose=$client->createTranslation(fopen(__DIR__ . "/test.mp3","r"));
-```
 
 
