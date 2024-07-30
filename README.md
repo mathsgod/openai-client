@@ -20,33 +20,49 @@ $client=new Client("OPEN_API_KEY");
 
 ```php
 
-$response=$client->createChatCompletion([
-    "model"=>"gpt-3.5-turbo",
-    "messages"=>[
-        ["role"=>"user","content"=>"Hello world"],
-    ],
+$data = $client->chatCompletions()->create([
+    "model" => "gpt-4o-mini",
+    "messages" => [
+        ["role" => "user", "content" => "Hi"]
+    ]
 ]);
 
-/*
-{
-  "id": "chatcmpl-123",
-  "object": "chat.completion",
-  "created": 1677652288,
-  "choices": [{
-    "index": 0,
-    "message": {
-      "role": "assistant",
-      "content": "\n\nHello there, how may I assist you today?",
-    },
-    "finish_reason": "stop"
-  }],
-  "usage": {
-    "prompt_tokens": 9,
-    "completion_tokens": 12,
-    "total_tokens": 21
-  }
-}
-*/
+print_r($data);
+```
+
+```
+Array
+(
+    [id] => chatcmpl-1234
+    [object] => chat.completion
+    [created] => 1722324090
+    [model] => gpt-4o-mini-2024-07-18
+    [choices] => Array
+        (
+            [0] => Array
+                (
+                    [index] => 0
+                    [message] => Array
+                        (
+                            [role] => assistant
+                            [content] => Hello! How can I assist you today?
+                        )
+
+                    [logprobs] =>
+                    [finish_reason] => stop
+                )
+
+        )
+
+    [usage] => Array
+        (
+            [prompt_tokens] => 8
+            [completion_tokens] => 9
+            [total_tokens] => 17
+        )
+
+    [system_fingerprint] => fp_1234
+)
 ```
 
 #### Function call
