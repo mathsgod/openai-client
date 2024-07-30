@@ -139,25 +139,13 @@ Array
 #### Create image
    
 ```php 
-$response=$client->createImage([
-    "prompt" => "A cute baby sea otter",
-    "n"=>2
-]);
-/*
-{
-  "created": 1589478378,
-  "data": [
-    {
-      "url": "https://..."
-    },
-    {
-      "url": "https://..."
-    }
-  ]
-}
-*/
+print_r($client->images()->generations([
+    "model" => "dall-e-3",
+    "prompt" => "a white siamese cat",
+    "n" => 1,
+    "size" => "1024x1024"
+]));
 ```
-
 
 ### Embeddings
 
