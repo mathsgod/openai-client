@@ -22,14 +22,6 @@ class ChatCompletions
         ]);
     }
 
-    public function createAsync(array $options, bool $stream = false)
-    {
-        return $this->client->getHttpClient()->postAsync("chat/completions", [
-            "json" => $options,
-            "stream" => $stream
-        ]);
-    }
-
     public function createStream(array $body)
     {
         $browser = new \React\Http\Browser();
