@@ -34,7 +34,7 @@ class Client implements LoggerAwareInterface
             "handler" => $handerStack
         ]);
         $this->logger = new NullLogger();
-        $this->max_retries = $max_retries;
+        $this->max_retries = 10;
         $this->base_url = $baseURL;
         $this->openai_api_key = $openai_api_key;
     }
