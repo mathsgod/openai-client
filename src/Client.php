@@ -20,7 +20,7 @@ class Client implements LoggerAwareInterface
     public $base_url;
     public $openai_api_key;
 
-    public function __construct(string $openai_api_key, int $max_retries = 10, string $baseURL = "https://api.openai.com/v1/")
+    public function __construct(string $openai_api_key, string $baseURL = "https://api.openai.com/v1/")
     {
         $handerStack = HandlerStack::create();
         $handerStack->push(Middleware::retry($this->retryDecider(), $this->retryDelay()));

@@ -21,6 +21,8 @@ class Threads
             "json" => $body
         ]);
 
+        print_R($data);
+
         return new Thread($this->client, $data["id"]);
     }
 
