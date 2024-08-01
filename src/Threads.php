@@ -12,6 +12,11 @@ class Threads
         $this->client = $client;
     }
 
+    
+    /**
+     * Create thread
+     * @param [messages:array, tool_resources:object, metadata:object] $body
+     */    
     public function create(array $body)
     {
         $data = $this->client->post("threads", [
@@ -20,8 +25,6 @@ class Threads
             ],
             "json" => $body
         ]);
-
-        print_R($data);
 
         return new Thread($this->client, $data["id"]);
     }

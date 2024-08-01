@@ -38,4 +38,13 @@ class Run
 
         return Runs::ProcessPromise($promise);
     }
+
+    public function steps()
+    {
+        return $this->client->get("threads/$this->thread_id/runs/$this->run_id/steps", [
+            "headers" => [
+                "OpenAI-Beta" => "assistants=v2"
+            ]
+        ]);
+    }
 }

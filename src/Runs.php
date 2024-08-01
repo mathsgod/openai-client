@@ -20,6 +20,15 @@ class Runs
         $this->thread_id = $thread_id;
     }
 
+    public function retrieve(string $run_id)
+    {
+        return $this->client->get("threads/$this->thread_id/runs/$run_id", [
+            "headers" => [
+                "OpenAI-Beta" => "assistants=v2"
+            ]
+        ]);
+    }
+
     public function list()
     {
         return $this->client->get("threads/$this->thread_id/runs", [
@@ -45,12 +54,16 @@ class Runs
         $stream = new ThroughStream();
 
         $promise->then(function (ResponseInterface $response) use (&$stream) {
+
+
+
             $s = $response->getBody();
             assert($s instanceof ReadableStreamInterface);
 
             $next_chunk = "";
 
             $s->on("data", function ($chunk) use (&$stream, &$next_chunk) {
+                $stream->write($chunk);
 
 
                 $chunk = $next_chunk . $chunk;
