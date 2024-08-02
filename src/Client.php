@@ -39,6 +39,11 @@ class Client implements LoggerAwareInterface
         $this->openai_api_key = $openai_api_key;
     }
 
+    public function vectorStores()
+    {
+        return new VectorStores($this);
+    }
+
     public function assistant(string $assistant_id)
     {
         return new Assistant($this, $assistant_id);
