@@ -40,6 +40,7 @@ class ChatCompletions
             $next_chunk = "";
 
             $s->on("data", function ($chunk) use (&$stream, &$next_chunk) {
+                //echo $chunk;
 
 
                 $chunk = $next_chunk . $chunk;
