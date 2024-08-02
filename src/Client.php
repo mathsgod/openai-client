@@ -110,6 +110,11 @@ class Client implements LoggerAwareInterface
         return new Models($this);
     }
 
+    public function file(string $file_id)
+    {
+        return new File($this, $file_id);
+    }
+
     public function files()
     {
         return new Files($this);
