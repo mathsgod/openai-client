@@ -2,8 +2,17 @@
 
 namespace OpenAI;
 
-class Files
+use IteratorAggregate;
+use Traversable;
+
+class Files //implements IteratorAggregate
 {
+
+    /*    public function getIterator(): Traversable
+    {
+        return new \ArrayIterator($this->list());
+    }
+ */
     private $client;
     public function __construct(Client $client)
     {
