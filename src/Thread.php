@@ -5,7 +5,7 @@ namespace OpenAI;
 class Thread
 {
     private $client;
-    private $thread_id;
+    public $thread_id;
 
     public function __construct(Client $client, string $thread_id)
     {
