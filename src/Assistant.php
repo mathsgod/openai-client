@@ -5,7 +5,7 @@ namespace OpenAI;
 class Assistant
 {
     private $client;
-    private $assistant_id;
+    public $assistant_id;
 
     public function __construct(Client $client, string $assistant_id)
     {

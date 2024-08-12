@@ -10,6 +10,15 @@ class Assistants
         $this->client = $client;
     }
 
+    public function retrieve(string $assistant_id)
+    {
+        return $this->client->get("assistants/" . $assistant_id, [
+            "headers" => [
+                "OpenAI-Beta" => "assistants=v2"
+            ]
+        ]);
+    }
+
     public function list()
     {
         return $this->client->get("assistants", [
