@@ -6,8 +6,6 @@ use Psr\Http\Message\ResponseInterface;
 use React\Stream\ReadableStreamInterface;
 use React\Stream\ThroughStream;
 
-use function React\Promise\Stream\unwrapReadable;
-
 class ChatCompletions
 {
     public $client;
