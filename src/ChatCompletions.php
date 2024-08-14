@@ -6,6 +6,8 @@ use Psr\Http\Message\ResponseInterface;
 use React\Stream\ReadableStreamInterface;
 use React\Stream\ThroughStream;
 
+use function React\Promise\Stream\unwrapReadable;
+
 class ChatCompletions
 {
     public $client;
@@ -33,6 +35,7 @@ class ChatCompletions
 
         $stream = new ThroughStream();
 
+
         $promise->then(function (ResponseInterface $response) use (&$stream) {
             $s = $response->getBody();
             assert($s instanceof ReadableStreamInterface);
@@ -57,7 +60,7 @@ class ChatCompletions
                 $lines = array_filter($lines);
 
                 foreach ($lines as $line) {
-                    $stream->write($line);
+                    $stream->write($line . "\n\n");
                 }
             });
 
