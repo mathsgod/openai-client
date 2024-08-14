@@ -13,7 +13,7 @@ class Models
 
     public function list()
     {
-        return $this->client->get("models")["data"];
+        return $this->client->get("models");
     }
 
     public function retrieve(string $model)
