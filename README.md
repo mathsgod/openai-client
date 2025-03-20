@@ -54,15 +54,6 @@ $tools = [
     ]
 ];
 
-
-$data = $client->responses()->create([
-    "model" => "gpt-4o-mini",
-    "input" => "What is the price and release date of iPhone 14 Pro Max?",
-    "tools" => $tools,
-]);
-
-
-
 $data = $client->responses()->create([
     "model" => "gpt-4o-mini",
     "input" => "What is the price and release date of iPhone 14 Pro Max?",
