@@ -97,7 +97,58 @@ print_r($data);
 
 ```
 
+### Responses Streaming
 
+```php
+$tool = [
+    "type" => "function",
+    "name" => "get_weather",
+    "description" => "Get current temperature for a given location.",
+    "parameters" => [
+        "type" => "object",
+        "properties" => [
+            "location" => [
+                "type" => "string",
+                "description" => "The city and state, e.g. San Francisco, CA"
+            ]
+        ],
+        "required" => ["location"],
+        "additional_properties" => false
+    ]
+];
+
+
+$stream = $client->responses()->createStream([
+    "model" => "gpt-4o-mini",
+    "input" => "What is the weather like in Paris today?",
+    "tools" => [$tool],
+]);
+
+$stream->onCompleted(function ($data) use ($client, $tool) {
+    $input = [];
+    $input[] = [
+        "type" => "function_call_output",
+        "call_id" => $data["response"]["output"][0]["call_id"],
+        "output" => json_encode("Paris is currently 20 degrees Celsius with clear skies."),
+    ];
+
+    $s2 = $client->responses()->createStream([
+        "model" => "gpt-4o-mini",
+        "input" => $input,
+        "tools" => [$tool],
+        "previous_response_id" => $data["response"]["id"],
+    ]);
+
+    $s2->onOutputTextDelta(function ($data) {
+        echo "output_text.delta: " . $data["delta"] . "\n";
+    });
+
+    $s2->onCompleted(function ($data) {
+        echo "completed\n";
+        print_r($data);
+    });
+   
+});
 
 
 ### Chat completion
