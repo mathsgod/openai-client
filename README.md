@@ -16,6 +16,99 @@ $client=new Client("OPEN_API_KEY");
 ```
 
 
+### Responses
+
+```php
+$tools = [
+    [
+        "type" => "function",
+        "name" => "get_iphone_price",
+        "description" => "Get the current price of an iPhone model.",
+        "parameters" => [
+            "type" => "object",
+            "properties" => [
+                "model" => [
+                    "type" => "string",
+                    "description" => "The iPhone model, e.g. iPhone 14 Pro Max"
+                ]
+            ],
+            "required" => ["model"],
+            "additional_properties" => false
+        ]
+    ],
+    [
+        "type" => "function",
+        "name" => "get_iphone_release_date",
+        "description" => "Get the release date of an iPhone model.",
+        "parameters" => [
+            "type" => "object",
+            "properties" => [
+                "model" => [
+                    "type" => "string",
+                    "description" => "The iPhone model, e.g. iPhone 14 Pro Max"
+                ]
+            ],
+            "required" => ["model"],
+            "additional_properties" => false
+        ]
+    ]
+];
+
+
+$data = $client->responses()->create([
+    "model" => "gpt-4o-mini",
+    "input" => "What is the price and release date of iPhone 14 Pro Max?",
+    "tools" => $tools,
+]);
+
+
+
+$data = $client->responses()->create([
+    "model" => "gpt-4o-mini",
+    "input" => "What is the price and release date of iPhone 14 Pro Max?",
+    "tools" => $tools,
+]);
+
+$input = [];
+
+foreach ($data["output"] as $output) {
+    if ($output["name"] == "get_iphone_price") {
+        $input[] = [
+            "type" => "function_call_output",
+            "call_id" => $output["call_id"],
+            "output" => json_encode([
+                "model" => "iPhone 14 Pro Max",
+                "price" => "$1099"
+            ]),
+        ];
+    }
+
+    if ($output["name"] == "get_iphone_release_date") {
+        $input[] = [
+            "type" => "function_call_output",
+            "call_id" => $output["call_id"],
+            "output" => json_encode([
+                "model" => "iPhone 14 Pro Max",
+                "release_date" => "September 16, 2022"
+            ]),
+        ];
+    }
+}
+
+$data = $client->responses()->create([
+    "model" => "gpt-4o-mini",
+    "input" => $input,
+    "tools" => $tools,
+    "previous_response_id" => $data["id"],
+]);
+
+print_r($data);
+
+```
+
+
+
+
 ### Chat completion
 
 ```php
