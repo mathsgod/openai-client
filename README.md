@@ -150,6 +150,8 @@ $stream->onCompleted(function ($data) use ($client, $tool) {
    
 });
 
+```
+
 
 ### Chat completion
 
