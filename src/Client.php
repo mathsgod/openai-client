@@ -39,6 +39,11 @@ class Client implements LoggerAwareInterface
         $this->openai_api_key = $openai_api_key;
     }
 
+    public function response(string $response_id)
+    {
+        return new Response($this, $response_id);
+    }
+
     public function vectorStores()
     {
         return new VectorStores($this);
@@ -67,6 +72,11 @@ class Client implements LoggerAwareInterface
     public function chatCompletions()
     {
         return new ChatCompletions($this);
+    }
+
+    public function responses()
+    {
+        return new Responses($this);
     }
 
     public function audio()
@@ -169,6 +179,8 @@ class Client implements LoggerAwareInterface
             return 5000 * (1 + $numberOfRetries);
         };
     }
+
+    
 
     private function retryDecider()
     {
