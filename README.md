@@ -343,7 +343,7 @@ $client->assistants->retrieve("asst_1234");
 
 ### Delete
 ```php
-$client->assistant("asst_1234")->delete();
+$client->assistants->delete("asst_1234");
 ```
 
 ## Threads

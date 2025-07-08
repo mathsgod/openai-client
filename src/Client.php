@@ -31,6 +31,10 @@ class Client implements LoggerAwareInterface
     public $threads;
     public $audio;
     public $vectorStores;
+
+    /**
+     * @deprecated
+     */
     public $assistants;
 
     public function __construct(string $openai_api_key, string $baseURL = "https://api.openai.com/v1/")

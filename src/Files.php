@@ -58,4 +58,9 @@ class Files //implements IteratorAggregate
     {
         return $this->client->delete("files/$file_id");
     }
+
+    public function content(string $file_id)
+    {
+        return $this->client->get("files/$file_id/content");
+    }
 }
