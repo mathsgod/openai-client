@@ -33,7 +33,6 @@ class Client implements LoggerAwareInterface
     public $vectorStores;
     public $assistants;
 
-
     public function __construct(string $openai_api_key, string $baseURL = "https://api.openai.com/v1/")
     {
         $handerStack = HandlerStack::create();
@@ -64,6 +63,9 @@ class Client implements LoggerAwareInterface
         $this->threads = new Threads($this);
         $this->audio = new Audio($this);
         $this->vectorStores = new VectorStores($this);
+        $this->assistants = new Assistants($this);
+        $this->models = new Models($this);
+        $this->threads = new Threads($this);
     }
 
 
@@ -169,21 +171,33 @@ class Client implements LoggerAwareInterface
         return json_decode($response->getBody()->getContents(), true);
     }
 
+    /**
+     * @deprecated Use $this->models property instead.
+     */
     public function models()
     {
         return new Models($this);
     }
 
+    /**
+     * @deprecated Use $this->files property instead.
+     */
     public function file(string $file_id)
     {
         return new File($this, $file_id);
     }
 
+    /**
+     * @deprecated Use $this->files property instead.
+     */
     public function files()
     {
         return new Files($this);
     }
 
+    /**
+     * @deprecated Use $this->embeddings property instead.
+     */
     public function embeddings()
     {
         return new Embeddings($this);
@@ -194,16 +208,25 @@ class Client implements LoggerAwareInterface
         return $this->client;
     }
 
+    /**
+     * @deprecated Use $this->threads property instead.
+     */
     public function threads()
     {
         return new Threads($this);
     }
 
+    /**
+     * @deprecated Use $this->threads property and fetch by ID.
+     */
     public function thread(string $thread_id)
     {
         return new Thread($this, $thread_id);
     }
 
+    /**
+     * @deprecated Not part of the stable API.
+     */
     public function getTest()
     {
         $response = $this->client->get("dashboard/billing/usage", [
@@ -215,6 +238,9 @@ class Client implements LoggerAwareInterface
         return json_decode($response->getBody()->getContents(), true);
     }
 
+    /**
+     * @deprecated Not part of the stable API.
+     */
     public function getUsage(string $date)
     {
         $response = $this->client->get("usage", [
@@ -225,8 +251,6 @@ class Client implements LoggerAwareInterface
         return json_decode($response->getBody()->getContents(), true);
     }
 
-
-
     private function retryDelay()
     {
         return function ($numberOfRetries) {
@@ -235,14 +259,13 @@ class Client implements LoggerAwareInterface
     }
 
 
-
     private function retryDecider()
     {
         return function (
             $retries,
             \GuzzleHttp\Psr7\Request $request,
-            \GuzzleHttp\Psr7\Response $response = null,
-            \GuzzleHttp\Exception\RequestException $exception = null
+            ?\GuzzleHttp\Psr7\Response $response = null,
+            ?\GuzzleHttp\Exception\RequestException $exception = null
         ) {
             // Limit the number of retries to max_retries
             if ($retries >= $this->max_retries) {
