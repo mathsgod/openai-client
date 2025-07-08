@@ -20,6 +20,20 @@ class Client implements LoggerAwareInterface
     public $base_url;
     public $openai_api_key;
 
+    public $responses;
+    public $files;
+    public $batches;
+    public $images;
+    public $moderations;
+    public $chatCompletions;
+    public $embeddings;
+    public $models;
+    public $threads;
+    public $audio;
+    public $vectorStores;
+    public $assistants;
+
+
     public function __construct(string $openai_api_key, string $baseURL = "https://api.openai.com/v1/")
     {
         $handerStack = HandlerStack::create();
@@ -37,9 +51,22 @@ class Client implements LoggerAwareInterface
         $this->max_retries = 10;
         $this->base_url = $baseURL;
         $this->openai_api_key = $openai_api_key;
+
+        $this->responses = new Responses($this);
+        $this->files = new Files($this);
+        $this->batches = new Batches($this);
+
+        $this->images = new Images($this);
+        $this->moderations = new Moderations($this);
+        $this->chatCompletions = new ChatCompletions($this);
+        $this->embeddings = new Embeddings($this);
+        $this->models = new Models($this);
+        $this->threads = new Threads($this);
+        $this->audio = new Audio($this);
+        $this->vectorStores = new VectorStores($this);
     }
 
-    
+
 
     public function response(string $response_id)
     {
@@ -55,37 +82,57 @@ class Client implements LoggerAwareInterface
     {
         return new Assistant($this, $assistant_id);
     }
-
+    /**
+     * @deprecated Use $this->assistants property instead.
+     */
     public function assistants()
     {
         return new Assistants($this);
     }
 
+    /**
+     * @deprecated Use $this->images property instead.
+     */
     public function images()
     {
         return new Images($this);
     }
 
+    /**
+     * @deprecated Use $this->moderations property instead.
+     */
     public function moderations()
     {
         return new Moderations($this);
     }
 
+    /**
+     * @deprecated Use $this->chatCompletions property instead.
+     */
     public function chatCompletions()
     {
         return new ChatCompletions($this);
     }
 
+    /**
+     * @deprecated Use $this->responses property instead.
+     */
     public function responses()
     {
         return new Responses($this);
     }
 
+    /**
+     * @deprecated Use $this->batches property instead.
+     */
     public function batches()
     {
         return new Batches($this);
     }
 
+    /**
+     * @deprecated Use $this->audio property instead.
+     */
     public function audio()
     {
         return new Audio($this);
@@ -187,7 +234,7 @@ class Client implements LoggerAwareInterface
         };
     }
 
-    
+
 
     private function retryDecider()
     {
