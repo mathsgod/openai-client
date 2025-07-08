@@ -7,7 +7,9 @@ class Run
     private $client;
     private $thread_id;
     private $run_id;
-
+    /**
+     * @deprecated This constructor is deprecated and may be removed in future versions.
+     */
     public function __construct(Client $client, string $thread_id, string $run_id)
     {
         $this->client = $client;
@@ -15,6 +17,9 @@ class Run
         $this->run_id = $run_id;
     }
 
+    /**
+     * @deprecated This method is deprecated and may be removed in future versions.
+     */
     public function submitToolOutputs(array $body)
     {
         return $this->client->post("threads/$this->thread_id/runs/$this->run_id/submit_tool_outputs", [
@@ -25,6 +30,9 @@ class Run
         ]);
     }
 
+    /**
+     * @deprecated This method is deprecated and may be removed in future versions.
+     */
     public function submitToolOutputsAsStream(array $body)
     {
         $browser = new \React\Http\Browser();
@@ -39,6 +47,9 @@ class Run
         return Runs::ProcessPromise($promise);
     }
 
+    /**
+     * @deprecated This method is deprecated and may be removed in future versions.
+     */
     public function steps()
     {
         return $this->client->get("threads/$this->thread_id/runs/$this->run_id/steps", [
