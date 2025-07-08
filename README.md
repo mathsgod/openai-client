@@ -54,7 +54,7 @@ $tools = [
     ]
 ];
 
-$data = $client->responses()->create([
+$data = $client->responses->create([
     "model" => "gpt-4o-mini",
     "input" => "What is the price and release date of iPhone 14 Pro Max?",
     "tools" => $tools,
@@ -86,7 +86,7 @@ foreach ($data["output"] as $output) {
     }
 }
 
-$data = $client->responses()->create([
+$data = $client->responses->create([
     "model" => "gpt-4o-mini",
     "input" => $input,
     "tools" => $tools,
@@ -118,7 +118,7 @@ $tool = [
 ];
 
 
-$stream = $client->responses()->createStream([
+$stream = $client->responses->createStream([
     "model" => "gpt-4o-mini",
     "input" => "What is the weather like in Paris today?",
     "tools" => [$tool],
@@ -132,7 +132,7 @@ $stream->onCompleted(function ($data) use ($client, $tool) {
         "output" => json_encode("Paris is currently 20 degrees Celsius with clear skies."),
     ];
 
-    $s2 = $client->responses()->createStream([
+    $s2 = $client->responses->createStream([
         "model" => "gpt-4o-mini",
         "input" => $input,
         "tools" => [$tool],
@@ -157,7 +157,7 @@ $stream->onCompleted(function ($data) use ($client, $tool) {
 
 ```php
 
-$data = $client->chatCompletions()->create([
+$data = $client->chatCompletions->create([
     "model" => "gpt-4o-mini",
     "messages" => [
         ["role" => "user", "content" => "Hi"]
@@ -205,7 +205,7 @@ Array
 #### Function call
 
 ```php
-$data=$client->chatCompletions()->create([
+$data=$client->chatCompletions->create([
    "model" => "gpt-4o-mini",
     "messages" => [
       ["role" => "user", "content" => "What is the price of iphone14?"]
@@ -287,7 +287,7 @@ print_r($client->images()->generations([
 ### Embeddings
 
 ```php
-print_r($client->embeddings()->create([
+print_r($client->embeddings->create([
     "model" => "text-embedding-3-small",
     "input"=>"I feel great",
 ]));
@@ -298,7 +298,7 @@ print_r($client->embeddings()->create([
 
 #### Speech
 ```php
-print_r($client->audio()->speech([
+print_r($client->audio->speech([
     "model"=>"tts-1",
     "input"=>"Hello, how are you?",
     "voice"=>"alloy"
@@ -307,7 +307,7 @@ print_r($client->audio()->speech([
 
 #### Transcriptions
 ```php
-print_r($client->audio()->transcriptions([
+print_r($client->audio->transcriptions([
     "model"=>"whisper-1",
     "file"=>fopen('/path/to/audio.mp3', 'r')
 ]));
@@ -315,7 +315,7 @@ print_r($client->audio()->transcriptions([
 
 #### Translation
 ```php
-print_r($client->audio()->translation([
+print_r($client->audio->translation([
     "model"=>"whisper-1",
     "file"=>fopen('/path/to/audio.mp3', 'r')
 ]));
@@ -326,19 +326,19 @@ print_r($client->audio()->translation([
 ### Create
 
 ```php
-$client->assistants()->create([
+$client->assistants->create([
     "model" => "gpt-4o-mini",
 ]);
 ```    
 
 ### List
 ```php
-$client->assistants()->list();
+$client->assistants->list();
 ```
 
 ### Retrieve
 ```php
-$client->assistants()->retrieve("asst_1234");
+$client->assistants->retrieve("asst_1234");
 ```
 
 ### Delete
@@ -351,7 +351,7 @@ $client->assistant("asst_1234")->delete();
 ### Create
 
 ```php
-$client->threads()->create(); //return Thread object
+$client->threads->create(); //return Thread object
 ```
 
 
@@ -394,7 +394,7 @@ $stream->on("done", function () use (&$thread) {
 ## Example
 
 ```php
-$thread = $client->threads()->create([
+$thread = $client->threads->create([
     "messages" => [
         [
             "role" => "user",
@@ -403,7 +403,7 @@ $thread = $client->threads()->create([
     ]
 ]);
 
-$data=$thread->runs()->create([
+$data=$thread->runs->create([
     "assistant_id" => "asst_1234", //assistant_id
 ]);
 
