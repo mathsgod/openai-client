@@ -1,0 +1,5 @@
+{"custom_id":"test-1","method":"POST","url":"/v1/embeddings","body":{"model":"text-embedding-3-small","input":"Hello world"}}
+{"custom_id":"test-2","method":"POST","url":"/v1/embeddings","body":{"model":"text-embedding-3-small","input":"Welcome to the OpenAI API"}}
+{"custom_id":"test-3","method":"POST","url":"/v1/embeddings","body":{"model":"text-embedding-3-small","input":"This is a test of the OpenAI API"}}
+{"custom_id":"test-4","method":"POST","url":"/v1/embeddings","body":{"model":"text-embedding-3-small","input":"How does the OpenAI API work?"}}
+{"custom_id":"test-5","method":"POST","url":"/v1/embeddings","body":{"model":"text-embedding-3-small","input":"Let's explore the capabilities of the OpenAI API"}}

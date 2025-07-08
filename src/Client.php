@@ -39,6 +39,8 @@ class Client implements LoggerAwareInterface
         $this->openai_api_key = $openai_api_key;
     }
 
+    
+
     public function response(string $response_id)
     {
         return new Response($this, $response_id);
@@ -77,6 +79,11 @@ class Client implements LoggerAwareInterface
     public function responses()
     {
         return new Responses($this);
+    }
+
+    public function batches()
+    {
+        return new Batches($this);
     }
 
     public function audio()

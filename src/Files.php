@@ -23,10 +23,19 @@ class Files //implements IteratorAggregate
     {
         $data = [];
         foreach ($body as $name => $value) {
-            $data[] = [
-                "name" => $name,
-                "contents" => $value
-            ];
+            // If the value is a file path, open it as a CURLFile
+            if ($name === 'file' && is_string($value) && file_exists($value)) {
+                $data[] = [
+                    "name" => $name,
+                    "contents" => fopen($value, 'r'),
+                    "filename" => basename($value)
+                ];
+            } else {
+                $data[] = [
+                    "name" => $name,
+                    "contents" => $value
+                ];
+            }
         }
 
         return $this->client->post("files", [
