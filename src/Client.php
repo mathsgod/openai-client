@@ -263,7 +263,7 @@ class Client implements LoggerAwareInterface
             $retries,
             \GuzzleHttp\Psr7\Request $request,
             ?\GuzzleHttp\Psr7\Response $response = null,
-            ?mixed $exception = null
+            mixed $exception
         ) {
             // Limit the number of retries to max_retries
             if ($retries >= $this->max_retries) {
