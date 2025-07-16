@@ -40,7 +40,7 @@ class Client implements LoggerAwareInterface
     public function __construct(string $openai_api_key, string $baseURL = "https://api.openai.com/v1/")
     {
         $handerStack = HandlerStack::create();
-        $handerStack->push(Middleware::retry($this->retryDecider(), $this->retryDelay()));
+        $handerStack->push(Middleware::retry($this->retryDecider()));
 
         $this->client = new \GuzzleHttp\Client([
             "base_uri" => $baseURL,
@@ -255,12 +255,6 @@ class Client implements LoggerAwareInterface
         return json_decode($response->getBody()->getContents(), true);
     }
 
-    private function retryDelay()
-    {
-        return function ($numberOfRetries) {
-            return 5000 * (1 + $numberOfRetries);
-        };
-    }
 
 
     private function retryDecider()
@@ -269,7 +263,7 @@ class Client implements LoggerAwareInterface
             $retries,
             \GuzzleHttp\Psr7\Request $request,
             ?\GuzzleHttp\Psr7\Response $response = null,
-            ?\GuzzleHttp\Exception\RequestException $exception = null
+            ?mixed $exception = null
         ) {
             // Limit the number of retries to max_retries
             if ($retries >= $this->max_retries) {
