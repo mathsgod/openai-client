@@ -265,6 +265,15 @@ class Client implements LoggerAwareInterface
             ?\GuzzleHttp\Psr7\Response $response = null,
             mixed $exception
         ) {
+
+            $this->logger->debug("Retrying request", [
+                "retries" => $retries,
+                "request" => (string)$request->getUri(),
+                "method" => $request->getMethod(),
+                "exception" => $exception ? get_class($exception) : null,
+            ]);
+
+
             // Limit the number of retries to max_retries
             if ($retries >= $this->max_retries) {
                 return false;
