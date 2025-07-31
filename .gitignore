@@ -6,3 +6,5 @@
 .env
 
 /test7.php
+
+test*.php

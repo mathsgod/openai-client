@@ -262,8 +262,8 @@ class Client implements LoggerAwareInterface
         return function (
             $retries,
             \GuzzleHttp\Psr7\Request $request,
-            ?\GuzzleHttp\Psr7\Response $response = null,
-            mixed $exception
+            ?\GuzzleHttp\Psr7\Response $response,
+            $exception
         ) {
 
             $this->logger->debug("Retrying request", [
