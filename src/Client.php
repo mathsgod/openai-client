@@ -37,7 +37,7 @@ class Client implements LoggerAwareInterface
      */
     public $assistants;
 
-    public function __construct(string $openai_api_key, string $baseURL = "https://api.openai.com/v1/")
+    public function __construct(string $openai_api_key, string $baseURL = "https://api.openai.com/v1/", array $options = [])
     {
         $handerStack = HandlerStack::create();
         $handerStack->push(Middleware::retry($this->retryDecider()));
@@ -48,7 +48,8 @@ class Client implements LoggerAwareInterface
             "headers" => [
                 "Authorization" => "Bearer " . $openai_api_key,
             ],
-            "handler" => $handerStack
+            "handler" => $handerStack,
+            ...$options
         ]);
         $this->logger = new NullLogger();
         $this->max_retries = 10;
